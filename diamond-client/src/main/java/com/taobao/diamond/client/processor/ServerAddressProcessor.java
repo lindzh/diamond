@@ -346,7 +346,7 @@ public class ServerAddressProcessor {
         }
         hostConfiguration.setHost(configServerAddress, port);
 
-        String serverAddressUrl = Constants.CONFIG_HTTP_URI_FILE;
+        String serverAddressUrl = Constants.CONFIG_HTTP_URI_FILE+diamondConfigure.getUnitName();
 
         HttpMethod httpMethod = new GetMethod(serverAddressUrl);
         // 设置HttpMethod的参数

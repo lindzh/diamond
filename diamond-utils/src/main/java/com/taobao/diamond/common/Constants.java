@@ -11,6 +11,10 @@ package com.taobao.diamond.common;
 
 public class Constants {
 
+    public static final String DIAMOND_ENV_UNIT_KEY = "diamond.env.unit";
+
+    public static final String DEFAULT_DIAMOND_ENV_UNIT = "default";
+
     public static final String DEFAULT_GROUP = "DEFAULT_GROUP";
     
     public static final String BASE_DIR = "config-data";
@@ -55,7 +59,7 @@ public class Constants {
 
     public static final String HTTP_URI_FILE = "/config.co";
 
-    public static final String CONFIG_HTTP_URI_FILE = "/diamond/dsaddr-internal";
+    public static final String CONFIG_HTTP_URI_FILE = "/diamond/dsaddr-";
 
     public static final String HTTP_URI_LOGIN = "/url";
 

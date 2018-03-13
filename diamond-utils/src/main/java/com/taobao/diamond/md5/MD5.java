@@ -91,13 +91,6 @@ public class MD5 {
         }
     }
 
-
-    /**
-     * 对二进制数据进行md5
-     * 
-     * @param str
-     * @return md5 byte[16]
-     */
     public byte[] hash(byte[] data) {
         opLock.lock();
         try {
