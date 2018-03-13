@@ -14,6 +14,26 @@ import java.util.concurrent.Executors;
  * 2. 添加nginx服务发现diamond server或者配置diamond server ip到本地 {user.home}/diamond/ServerAddress
  * nginx 服务发现配置: 域名 jmenv.tbsite.net 端口:8080 doc: /diamond/dsaddr-default doc内容 diamond server ip
  */
+
+/**
+    nginx config
+ server {
+     listen       8080;
+     server_name  jmenv.tbsite.net;
+
+     location /diamond {
+     root   hotdoc/;
+     }
+
+     location /rocketmq {
+     root hotdoc/;
+     }
+ }
+
+ cat hotdoc/diamond/dsaddr-default
+ 127.0.0.1
+
+ */
 public class DiamondExample {
 
     public static final String GROUP = "DEFAULT_GROUP";
