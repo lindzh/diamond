@@ -73,7 +73,6 @@ public class DefaultDiamondManager implements DiamondManager {
      * @param group
      * @param dataId
      * @param managerListenerList
-     * @param clusterType
      */
     public DefaultDiamondManager(String group, String dataId, List<ManagerListener> managerListenerList) {
         this.dataId = dataId;
