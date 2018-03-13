@@ -258,8 +258,6 @@ class DefaultDiamondSubscriber implements DiamondSubscriber {
 
     /**
      * 向DiamondServer请求dataId对应的配置信息，并将结果抛给客户的监听器
-     * 
-     * @param dataId
      */
     private void receiveConfigInfo(final CacheData cacheData) {
         scheduledExecutor.execute(new Runnable() {
@@ -888,8 +886,6 @@ class DefaultDiamondSubscriber implements DiamondSubscriber {
 
     /**
      * 获取探测更新的DataID的请求字符串
-     * 
-     * @param localModifySet
      * @return
      */
     private String getProbeUpdateString() {

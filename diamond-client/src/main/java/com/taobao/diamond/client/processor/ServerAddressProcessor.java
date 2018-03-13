@@ -242,7 +242,11 @@ public class ServerAddressProcessor {
         }
     }
 
-
+    /**
+     * local ServerAddress config
+     * filePath:{user.home}/diamond/ServerAddress
+     * content:diamond server list
+     */
     void reloadServerAddresses() {
         FileInputStream fis = null;
         InputStreamReader reader = null;
@@ -317,9 +321,9 @@ public class ServerAddressProcessor {
 
     /**
      * 获取diamond服务器地址列表
-     * 
      * @param acquireCount
-     *            根据0或1决定从日常或线上获取
+     * 根据0或1决定从日常或线上获取
+     * like jmenv.use nginx doc config for diamond server discovery
      * @return
      */
     private boolean acquireServerAddressOnce(int acquireCount) {
@@ -368,8 +372,7 @@ public class ServerAddressProcessor {
                     this.diamondConfigure.setDomainNameList(newDomainNameList);
                     return true;
                 }
-            }
-            else {
+            } else {
                 log.warn("没有可用的新服务器列表");
             }
         }

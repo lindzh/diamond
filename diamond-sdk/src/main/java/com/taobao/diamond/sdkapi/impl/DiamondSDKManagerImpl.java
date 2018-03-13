@@ -810,13 +810,11 @@ public class DiamondSDKManagerImpl implements DiamondSDKManager {
     }
 
 
-    @Override
     public Map<String, DiamondSDKConf> getDiamondSDKConfMaps() {
         return this.diamondSDKConfMaps;
     }
 
 
-    @Override
     public BatchContextResult<ConfigInfoEx> batchQuery(String serverId, String groupName, List<String> dataIds) {
         // 创建返回结果
         BatchContextResult<ConfigInfoEx> response = new BatchContextResult<ConfigInfoEx>();
@@ -925,7 +923,6 @@ public class DiamondSDKManagerImpl implements DiamondSDKManager {
     }
 
 
-    @Override
     public BatchContextResult<ConfigInfoEx> batchAddOrUpdate(String serverId, String groupName,
             Map<String, String> dataId2ContentMap) {
         // 创建返回结果

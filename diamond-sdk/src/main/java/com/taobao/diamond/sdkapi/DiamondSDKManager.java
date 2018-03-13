@@ -27,7 +27,6 @@ import com.taobao.diamond.domain.PageContextResult;
  * @author libinbin.pt
  * @datetime 2010-7-16 обнГ04:03:28
  * 
- *           {@link #exists(String, String, String)}
  */
 public interface DiamondSDKManager {
 	
