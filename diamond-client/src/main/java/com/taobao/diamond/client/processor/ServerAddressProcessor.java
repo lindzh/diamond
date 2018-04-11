@@ -332,17 +332,20 @@ public class ServerAddressProcessor {
         }
         else {
             if (acquireCount == 0) {
-                configServerAddress = Constants.DEFAULT_DOMAINNAME;
-                port = Constants.DEFAULT_PORT;
+                configServerAddress = Constants.DEFAULT_DISCOVERY_DOMAINNAME;
+                port = Constants.DEFAULT_DISCOVERY_PORT;
             }
             else {
-                configServerAddress = Constants.DAILY_DOMAINNAME;
-                port = Constants.DEFAULT_PORT;
+                configServerAddress = Constants.DAILY_DISCOVERY_DOMAINNAME;
+                port = Constants.DEFAULT_DISCOVERY_PORT;
             }
         }
         hostConfiguration.setHost(configServerAddress, port);
 
-        String serverAddressUrl = Constants.CONFIG_HTTP_URI_FILE;
+        String serverAddressUrl = Constants.DIAMOND_SERVER_DISCOVERY_PATH;
+        if (diamondConfigure.getUnitName() != null && diamondConfigure.getUnitName().trim().length() > 0) {
+            serverAddressUrl = serverAddressUrl + "_" + diamondConfigure.getUnitName();
+        }
 
         HttpMethod httpMethod = new GetMethod(serverAddressUrl);
         // 设置HttpMethod的参数
@@ -390,7 +393,7 @@ public class ServerAddressProcessor {
 
 
     public String getErrorMessage(String configServerAddress) {
-        if (configServerAddress.equals(Constants.DEFAULT_DOMAINNAME)) {
+        if (configServerAddress.equals(Constants.DEFAULT_DISCOVERY_DOMAINNAME)) {
             return "获取服务器地址列表信息Http异常,如果你是在日常环境，请忽略这个异常,configServerAddress=" + configServerAddress + ",";
         }
         else {

@@ -6,7 +6,7 @@
 	<groupId>com.taobao.diamond</groupId>
 	<artifactId>diamond-all</artifactId>
 	<packaging>pom</packaging>
-	<version>2.0.5.4.bbg-SNAPSHOT</version>
+	<version>2.1.1-SNAPSHOT</version>
 	<name>taobao diamond v${project.version}</name>
 
 	<modules>
@@ -14,6 +14,8 @@
 		<module>diamond-sdk</module>
 		<module>diamond-server</module>
 		<module>diamond-utils</module>
+		<module>diamond-maven-plugin</module>
+		<module>diamond-example</module>
 	</modules>
 	
 	<build>
@@ -159,9 +161,9 @@
 	</dependencyManagement>
 	
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding><!-- compile插件 -->
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding><!-- site插件  -->
-		<maven.compiler.source>1.7</maven.compiler.source><!-- compile插件 -->
-		<maven.compiler.target>1.7</maven.compiler.target><!-- compile插件 -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
 	</properties>
 </project>

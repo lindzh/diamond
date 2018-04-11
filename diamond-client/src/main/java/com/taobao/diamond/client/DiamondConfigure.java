@@ -41,13 +41,15 @@ public class DiamondConfigure {
     private boolean connectionStaleCheckingEnabled = true;
     private int maxTotalConnections = 20;
     private int connectionTimeout = Constants.CONN_TIMEOUT;
-    private int port = Constants.DEFAULT_PORT;
+    private int port = Constants.DIAMOND_SERVER_PORT;
     private int scheduledThreadPoolSize = 1;
     // 获取数据时的重试次数
     private int retrieveDataRetryTimes = Integer.MAX_VALUE / 10;
 
     private String configServerAddress = null;
-    private int configServerPort = Constants.DEFAULT_PORT;
+    private int configServerPort = Constants.DIAMOND_SERVER_PORT;
+
+    private String unitName = "";
 
     // 本地数据保存路径
     private String filePath;
@@ -391,4 +393,11 @@ public class DiamondConfigure {
         this.localFirst = localFirst;
     }
 
+    public String getUnitName() {
+        return unitName;
+    }
+
+    public void setUnitName(String unitName) {
+        this.unitName = unitName;
+    }
 }

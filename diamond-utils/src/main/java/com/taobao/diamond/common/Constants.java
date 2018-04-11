@@ -27,6 +27,11 @@ import javax.swing.SpringLayout.Constraints;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+/**
+ * Discovery service
+ * http://jmenv.tbsite.net:8080/diamond/dsaddr
+ * 返回地址列表：每行一个ip，端口使用8080
+ */
 public class Constants {
 	public static final Log log = LogFactory.getLog(Constants.class);
 	
@@ -34,11 +39,24 @@ public class Constants {
     
     public static final String BASE_DIR = "config-data";
 
-    public static String DEFAULT_DOMAINNAME = "a.b.c";
+    public static String DEFAULT_DISCOVERY_DOMAINNAME = System.getProperty("diamond.discovery.default.domain","jmenv.tbsite.net");
 
-    public static String DAILY_DOMAINNAME = "d.e.f";
+    public static String DAILY_DISCOVERY_DOMAINNAME = System.getProperty("diamond.discovery.daily.domain","jmenv.tbsite.net");
 
-    public static int DEFAULT_PORT = 8080;
+    public static int DEFAULT_DISCOVERY_PORT = Integer.parseInt(System.getProperty("diamond.discovery.port","8080"));
+
+	public static int DIAMOND_SERVER_PORT = Integer.parseInt(System.getProperty("diamond.server.port","8080"));
+
+	/** 获取数据的URI地址，如果不带ip，那么轮换使用ServerAddress中的地址请求
+	 * http://192.168.32.55:8080/data/config.co
+	 * */
+	public static String DIAMOND_SERVER_DATA_PATH = System.getProperty("diamond.server.data.path","/data/config.co");
+
+	/** diamond server discovery path
+	 * if unitname is not null then path is DIAMOND_SERVER_DISCOVERY_PATH_default
+	 * /diamond/dsaddr_default
+	 * */
+	public static String DIAMOND_SERVER_DISCOVERY_PATH = "/diamond/dsaddr";
 
     public static final String NULL = "";
 
@@ -72,23 +90,11 @@ public class Constants {
 
     public static final int RECV_WAIT_TIMEOUT = ONCE_TIMEOUT * 5;// 毫秒
 
-    /** 获取数据的URI地址，如果不带ip，那么轮换使用ServerAddress中的地址请求 */
-    public static String HTTP_URI_FILE = "/url";
-
-    /** 获取ServerAddress的配置uri */
-    public static String CONFIG_HTTP_URI_FILE = HTTP_URI_FILE;
-    
-    public static String HTTP_URI_LOGIN = HTTP_URI_FILE;
-
     public static final String ENCODE = "UTF-8";
 
     public static final String LINE_SEPARATOR = Character.toString((char) 1);
 
     public static final String WORD_SEPARATOR = Character.toString((char) 2);
-
-    public static final String DEFAULT_USERNAME = "xxx";
-
-    public static final String DEFAULT_PASSWORD = "xxx";
     
     /*
      * 批量操作时, 单条数据的状态码
@@ -175,10 +181,6 @@ public class Constants {
 		} catch (IllegalAccessException e) {
 			throw new IllegalStateException(e);
 		}
-		
-		setValue(old, "CONFIG_HTTP_URI_FILE", "HTTP_URI_FILE");
-		setValue(old, "HTTP_URI_LOGIN", "HTTP_URI_FILE");
-		setValue(old, "DAILY_DOMAINNAME", "DEFAULT_DOMAINNAME");
 	}
 	
 	static {

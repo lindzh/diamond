@@ -44,9 +44,7 @@ public class NotifyController {
 
     /**
      * 通知配置信息改变
-     * 
-     * @param id
-     * @return
+     *
      */
     @RequestMapping(method = RequestMethod.GET, params = "method=notifyConfigInfo")
     public String notifyConfigInfo(@RequestParam("dataId") String dataId, @RequestParam("group") String group) {

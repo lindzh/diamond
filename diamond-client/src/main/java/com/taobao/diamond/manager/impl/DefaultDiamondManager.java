@@ -40,30 +40,25 @@ public class DefaultDiamondManager implements DiamondManager {
     private final List<ManagerListener> managerListeners = new LinkedList<ManagerListener>();
     private final String dataId;
     private final String group;
+    private final String unitName;
 
 
-    public DefaultDiamondManager(String dataId, ManagerListener managerListener) {
-        this(null, dataId, managerListener);
-    }
-
-
-    public DefaultDiamondManager(String group, String dataId, ManagerListener managerListener) {
+    public DefaultDiamondManager(String unitName,String group, String dataId, ManagerListener managerListener) {
         this.dataId = dataId;
         this.group = group;
-
-        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber();
+        this.unitName = unitName;
+        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber(this.unitName);
 
         this.managerListeners.add(managerListener);
         ((DefaultSubscriberListener) diamondSubscriber.getSubscriberListener()).addManagerListeners(this.dataId,
             this.group, this.managerListeners);
         diamondSubscriber.addDataId(this.dataId, this.group);
         diamondSubscriber.start();
-
     }
 
 
-    public DefaultDiamondManager(String dataId, List<ManagerListener> managerListenerList) {
-        this(null, dataId, managerListenerList);
+    public DefaultDiamondManager(String unitName,String dataId, List<ManagerListener> managerListenerList) {
+        this(unitName,null, dataId, managerListenerList);
     }
 
 
@@ -74,11 +69,11 @@ public class DefaultDiamondManager implements DiamondManager {
      * @param dataId
      * @param managerListenerList
      */
-    public DefaultDiamondManager(String group, String dataId, List<ManagerListener> managerListenerList) {
+    public DefaultDiamondManager(String unitName,String group, String dataId, List<ManagerListener> managerListenerList) {
         this.dataId = dataId;
         this.group = group;
-
-        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber();
+        this.unitName = unitName;
+        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber(this.unitName);
 
         this.managerListeners.addAll(managerListenerList);
         ((DefaultSubscriberListener) diamondSubscriber.getSubscriberListener()).addManagerListeners(this.dataId,

@@ -207,7 +207,7 @@ public class DiskService {
 
 
     private File createTempFile(String dataId, String group) throws IOException {
-        return File.createTempFile(group + "-" + dataId, ".tmp");
+        String tempPath = System.getProperty("java.io.tmpdir");
+        return new File(tempPath + File.separator + group + "-" + dataId + ".tmp");
     }
-
 }
