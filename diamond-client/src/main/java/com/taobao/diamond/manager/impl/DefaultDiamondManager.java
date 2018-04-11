@@ -27,7 +27,7 @@ import com.taobao.diamond.manager.ManagerListener;
 
 
 /**
- * ĞèÒª×¢ÒâµÄÊÇ£ºÒ»¸öJVMÖĞÒ»¸öDataIDÖ»ÄÜ¶ÔÓ¦Ò»¸öDiamondManager
+ * éœ€è¦æ³¨æ„çš„æ˜¯ï¼šä¸€ä¸ªJVMä¸­ä¸€ä¸ªDataIDåªèƒ½å¯¹åº”ä¸€ä¸ªDiamondManager
  * 
  * @author aoqiong
  * 
@@ -40,45 +40,40 @@ public class DefaultDiamondManager implements DiamondManager {
     private final List<ManagerListener> managerListeners = new LinkedList<ManagerListener>();
     private final String dataId;
     private final String group;
+    private final String unitName;
 
 
-    public DefaultDiamondManager(String dataId, ManagerListener managerListener) {
-        this(null, dataId, managerListener);
-    }
-
-
-    public DefaultDiamondManager(String group, String dataId, ManagerListener managerListener) {
+    public DefaultDiamondManager(String unitName,String group, String dataId, ManagerListener managerListener) {
         this.dataId = dataId;
         this.group = group;
-
-        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber();
+        this.unitName = unitName;
+        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber(this.unitName);
 
         this.managerListeners.add(managerListener);
         ((DefaultSubscriberListener) diamondSubscriber.getSubscriberListener()).addManagerListeners(this.dataId,
             this.group, this.managerListeners);
         diamondSubscriber.addDataId(this.dataId, this.group);
         diamondSubscriber.start();
-
     }
 
 
-    public DefaultDiamondManager(String dataId, List<ManagerListener> managerListenerList) {
-        this(null, dataId, managerListenerList);
+    public DefaultDiamondManager(String unitName,String dataId, List<ManagerListener> managerListenerList) {
+        this(unitName,null, dataId, managerListenerList);
     }
 
 
     /**
-     * Ê¹ÓÃÖ¸¶¨µÄ¼¯ÈºÀàĞÍclusterType
+     * ä½¿ç”¨æŒ‡å®šçš„é›†ç¾¤ç±»å‹clusterType
      * 
      * @param group
      * @param dataId
      * @param managerListenerList
      */
-    public DefaultDiamondManager(String group, String dataId, List<ManagerListener> managerListenerList) {
+    public DefaultDiamondManager(String unitName,String group, String dataId, List<ManagerListener> managerListenerList) {
         this.dataId = dataId;
         this.group = group;
-
-        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber();
+        this.unitName = unitName;
+        diamondSubscriber = DiamondClientFactory.getSingletonDiamondSubscriber(this.unitName);
 
         this.managerListeners.addAll(managerListenerList);
         ((DefaultSubscriberListener) diamondSubscriber.getSubscriberListener()).addManagerListeners(this.dataId,
@@ -101,7 +96,7 @@ public class DefaultDiamondManager implements DiamondManager {
 
     public void close() {
         /**
-         * ÒòÎªÍ¬Ò»¸öDataIDÖ»ÄÜ¶ÔÓ¦Ò»¸öMnanagerListener£¬ËùÒÔ£¬¹Ø±ÕÊ±Ò»´ÎĞÔ¹Ø±ÕËùÓĞManagerListener¼´¿É
+         * å› ä¸ºåŒä¸€ä¸ªDataIDåªèƒ½å¯¹åº”ä¸€ä¸ªMnanagerListenerï¼Œæ‰€ä»¥ï¼Œå…³é—­æ—¶ä¸€æ¬¡æ€§å…³é—­æ‰€æœ‰ManagerListenerå³å¯
          */
         ((DefaultSubscriberListener) diamondSubscriber.getSubscriberListener()).removeManagerListeners(this.dataId,
             this.group);
@@ -137,8 +132,8 @@ public class DefaultDiamondManager implements DiamondManager {
             return properties;
         }
         catch (IOException e) {
-            log.warn("×°ÔØpropertiesÊ§°Ü£º" + configInfo, e);
-            throw new RuntimeException("×°ÔØpropertiesÊ§°Ü£º" + configInfo, e);
+            log.warn("è£…è½½propertieså¤±è´¥ï¼š" + configInfo, e);
+            throw new RuntimeException("è£…è½½propertieså¤±è´¥ï¼š" + configInfo, e);
         }
     }
 
@@ -151,8 +146,8 @@ public class DefaultDiamondManager implements DiamondManager {
             return properties;
         }
         catch (IOException e) {
-            log.warn("×°ÔØpropertiesÊ§°Ü£º" + configInfo, e);
-            throw new RuntimeException("×°ÔØpropertiesÊ§°Ü£º" + configInfo, e);
+            log.warn("è£…è½½propertieså¤±è´¥ï¼š" + configInfo, e);
+            throw new RuntimeException("è£…è½½propertieså¤±è´¥ï¼š" + configInfo, e);
         }
     }
 
@@ -186,8 +181,8 @@ public class DefaultDiamondManager implements DiamondManager {
             return properties;
         }
         catch (IOException e) {
-            log.warn("×°ÔØpropertiesÊ§°Ü£º" + configInfo, e);
-            throw new RuntimeException("×°ÔØpropertiesÊ§°Ü£º" + configInfo, e);
+            log.warn("è£…è½½propertieså¤±è´¥ï¼š" + configInfo, e);
+            throw new RuntimeException("è£…è½½propertieså¤±è´¥ï¼š" + configInfo, e);
         }
     }
 

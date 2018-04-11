@@ -9,21 +9,55 @@
  */
 package com.taobao.diamond.common;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.swing.SpringLayout.Constraints;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * Discovery service
+ * http://jmenv.tbsite.net:8080/diamond/dsaddr
+ * 返回地址列表：每行一个ip，端口使用8080
+ */
 public class Constants {
 
-    public static final String DIAMOND_ENV_UNIT_KEY = "diamond.env.unit";
-
-    public static final String DEFAULT_DIAMOND_ENV_UNIT = "default";
-
-    public static final String DEFAULT_GROUP = "DEFAULT_GROUP";
+	public static final Log log = LogFactory.getLog(Constants.class);
+	
+    public static String DEFAULT_GROUP = "DEFAULT_GROUP";
     
     public static final String BASE_DIR = "config-data";
 
-    public static final String DEFAULT_DOMAINNAME = "jmenv.tbsite.net";
+    public static String DEFAULT_DISCOVERY_DOMAINNAME = System.getProperty("diamond.discovery.default.domain","jmenv.tbsite.net");
 
-    public static final String DAILY_DOMAINNAME = "jmenv.tbsite.net";
+    public static String DAILY_DISCOVERY_DOMAINNAME = System.getProperty("diamond.discovery.daily.domain","jmenv.tbsite.net");
 
-    public static final int DEFAULT_PORT = 8080;
+    public static int DEFAULT_DISCOVERY_PORT = Integer.parseInt(System.getProperty("diamond.discovery.port","8080"));
+
+	public static int DIAMOND_SERVER_PORT = Integer.parseInt(System.getProperty("diamond.server.port","8080"));
+
+	/** 获取数据的URI地址，如果不带ip，那么轮换使用ServerAddress中的地址请求
+	 * http://192.168.32.55:8080/data/config.co
+	 * */
+	public static String DIAMOND_SERVER_DATA_PATH = System.getProperty("diamond.server.data.path","/data/config.co");
+
+	/** diamond server discovery path
+	 * if unitname is not null then path is DIAMOND_SERVER_DISCOVERY_PATH_default
+	 * /diamond/dsaddr_default
+	 * */
+	public static String DIAMOND_SERVER_DISCOVERY_PATH = "/diamond/dsaddr";
 
     public static final String NULL = "";
 
@@ -49,42 +83,108 @@ public class Constants {
 
     public static final String SPACING_INTERVAL = "client-spacing-interval";
 
-    public static final int POLLING_INTERVAL_TIME = 15;// ��
+    public static final int POLLING_INTERVAL_TIME = 15;// 秒
 
-    public static final int ONCE_TIMEOUT = 2000;// ����
+    public static final int ONCE_TIMEOUT = 2000;// 毫秒
 
-    public static final int CONN_TIMEOUT = 2000;// ����
+    public static final int CONN_TIMEOUT = 2000;// 毫秒
 
-    public static final int RECV_WAIT_TIMEOUT = ONCE_TIMEOUT * 5;// ����
+    public static final int RECV_WAIT_TIMEOUT = ONCE_TIMEOUT * 5;// 毫秒
 
-    public static final String HTTP_URI_FILE = "/config.co";
-
-    public static final String CONFIG_HTTP_URI_FILE = "/diamond/dsaddr-";
-
-    public static final String HTTP_URI_LOGIN = "/url";
-
-    public static final String ENCODE = "GBK";
+    public static final String ENCODE = "UTF-8";
 
     public static final String LINE_SEPARATOR = Character.toString((char) 1);
 
     public static final String WORD_SEPARATOR = Character.toString((char) 2);
-
-    public static final String DEFAULT_USERNAME = "xxx";
-
-    public static final String DEFAULT_PASSWORD = "xxx";
     
     /*
-     * ��������ʱ, �������ݵ�״̬��
+     * 批量操作时, 单条数据的状态码
      */
-    // �����쳣
+    // 发生异常
     public static final int BATCH_OP_ERROR = -1;
-    // ��ѯ�ɹ�, ���ݴ���
+    // 查询成功, 数据存在
     public static final int BATCH_QUERY_EXISTS = 1;
-    // ��ѯ�ɹ�, ���ݲ�����
+    // 查询成功, 数据不存在
     public static final int BATCH_QUERY_NONEXISTS = 2;
-    // �����ɹ�
+    // 新增成功
     public static final int BATCH_ADD_SUCCESS = 3;
-    // ���³ɹ�
+    // 更新成功
     public static final int BATCH_UPDATE_SUCCESS = 4;
 
+    /** FIXME: yanghao, 获取配置，本地 快照 服务地址？ */
+	public static String GETCONFIG_LOCAL_SNAPSHOT_SERVER;
+
+	/**
+	 * 如果field的值未发生改变，那么使用fromField字段的值
+	 * @param old Map&lt;字段名, 久值&gt;
+	 * @param field 要改变的字段
+	 * @param fromField 提取值的字段
+	 */
+	private static void setValue(Map<String, Object> old, String field, String fromField) {
+		if (old.containsKey(field)) return; //改变了值，直接跳出
+		
+		try {
+			Constants.class.getDeclaredField(field).set(Constants.class,
+					Constants.class.getDeclaredField(fromField).get(Constants.class));
+		} catch (IllegalAccessException | NoSuchFieldException e) {
+			throw new IllegalArgumentException("设置：" + field + ", 从：" + fromField, e);
+		}
+	}
+	/** 配置优先级别：-D &gt; env &gt; diamond.properties  */
+	public static void init() {
+		File diamondFile = new File(System.getProperty("user.home"), "diamond/ServerAddress");
+		if (!diamondFile.exists()) {
+			diamondFile.getParentFile().mkdirs();
+			try (OutputStream out = new FileOutputStream(diamondFile)) {
+				out.write("localhost".getBytes());
+			} catch (IOException e) {
+				throw new IllegalStateException(diamondFile.toString(), e);
+			}
+		}
+		List<Field> fields = new ArrayList<>();
+		for (Field field : Constants.class.getDeclaredFields()) {
+			if (Modifier.isPublic(field.getModifiers()) && !Modifier.isFinal(field.getModifiers())) {
+				fields.add(field);
+			}
+		}
+		
+		Properties props = new Properties();
+		{
+			ClassLoader cl = Thread.currentThread().getContextClassLoader();
+			if (cl == null) cl = Constants.class.getClassLoader();
+			try (InputStream in = cl.getResourceAsStream("diamond.properties")) {
+				if (in != null) props.load(in);
+			} catch (IOException e) {
+				log.warn("load diamond.properties", e);
+			}
+		}
+		props.putAll(System.getenv());
+		props.putAll(System.getProperties());
+		
+		Map<String, Object> old = new HashMap<>(); 
+		try {
+			for (Field field : fields) {
+				if (!props.containsKey(field.getName())) continue;
+				old.put(field.getName(), field.get(Constants.class));
+				
+				String value = props.getProperty(field.getName());
+				Class<?> clazz = field.getType();
+				if (String.class.equals(clazz)) {
+					field.set(Constraints.class, value);
+				} else if (int.class.equals(clazz)) {
+					if (value != null) {
+						field.set(Constraints.class, Integer.parseInt(value));
+					}
+				} else {
+					throw new IllegalArgumentException(field + " 设置 " + value + " 还未支持");
+				}
+			}
+		} catch (IllegalAccessException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+	
+	static {
+		init();
+	}
 }

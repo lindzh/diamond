@@ -41,7 +41,7 @@ public class MockServer {
 
     public static void tearDownMockServer() {
         staticConfigInfos.clear();
-        DiamondClientFactory.getSingletonDiamondSubscriber().close();
+        DiamondClientFactory.getSingletonDiamondSubscriber("default").close();
         testMode = false;
     }
 

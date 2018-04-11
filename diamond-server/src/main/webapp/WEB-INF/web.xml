@@ -74,7 +74,7 @@
 	
 	<servlet-mapping>
 		<servlet-name>ConfigServlet</servlet-name>
-		<url-pattern>/config.co</url-pattern>
+		<url-pattern>/data/config.co</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>
