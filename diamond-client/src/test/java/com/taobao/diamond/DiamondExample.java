@@ -9,10 +9,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 /**
- * Ê¹ÓÃËµÃ÷
- * 1. °²×°²¿Êğ diamond-server ¶Ë¿ÚÒªÇó8080
- * 2. Ìí¼Ónginx·şÎñ·¢ÏÖdiamond server»òÕßÅäÖÃdiamond server ipµ½±¾µØ {user.home}/diamond/ServerAddress
- * nginx ·şÎñ·¢ÏÖÅäÖÃ: ÓòÃû jmenv.tbsite.net ¶Ë¿Ú:8080 doc: /diamond/dsaddr-default docÄÚÈİ diamond server ip
+ * ä½¿ç”¨è¯´æ˜
+ * 1. å®‰è£…éƒ¨ç½² diamond-server ç«¯å£è¦æ±‚8080
+ * 2. æ·»åŠ nginxæœåŠ¡å‘ç°diamond serveræˆ–è€…é…ç½®diamond server ipåˆ°æœ¬åœ° {user.home}/diamond/ServerAddress
+ * nginx æœåŠ¡å‘ç°é…ç½®: åŸŸå jmenv.tbsite.net ç«¯å£:8080 doc: /diamond/dsaddr-default docå†…å®¹ diamond server ip
  */
 
 /**

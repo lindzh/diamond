@@ -76,6 +76,7 @@
                     <fileName>src/conf/${package.environment}.properties</fileName>
                     <group>DEFAULT_GROUP</group>
                     <dataId>simple</dataId>
+                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

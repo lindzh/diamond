@@ -30,8 +30,6 @@ public class DiamondConfigure {
     private volatile int onceTimeout = Constants.ONCE_TIMEOUT;// 获取对于一个DiamondServer所对应的查询一个DataID对应的配置信息的Timeout时间
     private volatile int receiveWaitTime = Constants.RECV_WAIT_TIMEOUT;// 同步查询一个DataID所花费的时间
 
-    private volatile String unitName = System.getProperty(Constants.DIAMOND_ENV_UNIT_KEY,Constants.DEFAULT_DIAMOND_ENV_UNIT);
-
     private volatile List<String> domainNameList = new LinkedList<String>();
 
     private volatile boolean useFlowControl = true;
