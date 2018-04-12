@@ -71,12 +71,7 @@ public class RandomDiamondUtils {
     public int getMax_times() {
         return max_times;
     }
-    /**
-     * 随机取得一个diamondServer配置对象
-     * 
-     * @param diamondConfs
-     * @return DiamondConf diamondServer配置对象
-     */
+
     public DiamondConf generatorOneDiamondConf(){
         DiamondConf diamondConf=null;
         //访问下标小于最后一个下标
