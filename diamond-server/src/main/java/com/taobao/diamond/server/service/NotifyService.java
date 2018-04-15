@@ -78,8 +78,6 @@ public class NotifyService {
 
     /**
      * 通知配置信息改变
-     * 
-     * @param id
      */
     public void notifyConfigInfoChange(String dataId, String group) {
         Enumeration<?> enu = nodeProperties.propertyNames();
