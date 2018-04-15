@@ -41,11 +41,15 @@
 
 #### 文档待更新
 
-Doc：https://github.com/lindzh/diamond/doc
+Doc：https://github.com/lindzh/diamond/tree/master/doc
 
 http://www.iteye.com/news/28294
 
 https://blog.csdn.net/szwandcj/article/details/51165954
+
+#### 如何参与项目
+1. 参与讨论或者报问题：https://github.com/lindzh/diamond/issues
+2. 参与开发：https://github.com/lindzh/diamond/pulls
 
 #### RoadMap
 1. newconsole
